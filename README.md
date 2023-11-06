@@ -34,18 +34,3 @@ response of “action-not-allowed”.
 
 --You are to deploy your API on render.com and document it on postman. 
 --You are to submit your postman link. Make sure your workspace on postman is public.
-
-
-Write a test using Jest. Your test suite should be able to test:
-
- 
-TASK 5
-
-1. Registration endpoint on the task project you did previously
-2. Logging in endpoint
-3. Adding a new task
-4. The endpoint for getting the list of tasks
-5. The delete task endpoint
- 
-
-All your tests should pass. You can use “global” to set your token and task ID so that you can use it in the requests that needs an authorization token.

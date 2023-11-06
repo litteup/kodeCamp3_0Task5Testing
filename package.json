@@ -4,7 +4,7 @@
   "description": "Simple shop item API using MongoDB and NodeJs",
   "main": "index.js",
   "scripts": {
-    "test":"npx jest",
+    "test": "npx jest",
     "start": "nodemon index",
     "serve": "node index"
   },

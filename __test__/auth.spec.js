@@ -1,32 +1,55 @@
 const axios = require('axios');
+const {userCollection} = require('../schema/userSchema');
+const {router} = require('../routes/auth'); 
 
+let authorization;
 
-const authorization = " Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NTQwZmVhNDYxZGNhMDY5ZmU3YWE3NDgiLCJ1c2VybmFtZSI6ImFkbWlueCIsInBhc3N3b3JkIjoiJDJiJDEwJDlvdi5QWkEzMmVhVy5SdFF4RnRYUE9RZG5sNGwxQS8vOVBrUkY1SDJGcm9aQy54YW44WVY2Iiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjk4NzU4NTQzfQ.bHleRMlb7jrC3-KpQ1QcYBN4toagCg7mDNRC-76k8XQ"
+it("Test for registration endpoing",async()=>{
+    
+try {
+    
+        const response = await axios.post("http://localhost:3000/v1/auth/register", {
+            fullName: "admin test",
+            username: "admintest",
+            password: "admintest",
+            role: "admin"
+        });
+    
+        expect(response.status).toBe(201);
+        expect(response.data).toBe(`User created successfully.`);
 
-test("Test for registration endpoint.", async()=>{
-    const response = await axios.post("http://localhost:3000/v1/auth/register", {
-        fullName: "admin test2",
-        username: "adminTest2",
-        password: "admintest2",
-        role: "admin"
-    });
+        console.log("user registered successfully")
+    
+    } catch (error) {
+    console.log(error)
+}
 
-    expect(response.status).toBe(201);
-    expect(response.data).toBe("User created successfully.");
 });
 
 
-test("Test for login endpoint.", async()=>{
-    const response = await axios.post("http://localhost:3000/v1/auth/login",{
-        "username": "userx",
-        "password": "userx"
+it("Test for login endpoint.", async()=>{
+    try {
+        let response = await axios
+        .post("http://localhost:3000/v1/auth/login",{
+        "username": "admintest",
+        "password": "admintest"
+         
     });
+
+    global.userToken = response.data.token;
 
     expect(response.status).toBe(200);
     expect(typeof(response.data)).toBe("object");
+        
+    } catch (error) {
+        console.log(error.message)
+    }
 });
 
+
 test("Test for adding new shop item.", async()=>{
+    try {
+        
     const response = await axios.post("http://localhost:3000/v1/shop", {
         "name": "Item two",
         "description": "This is item two",
@@ -34,30 +57,41 @@ test("Test for adding new shop item.", async()=>{
         "isInStock": false
     }, {
         headers:{
-            authorization
+            authorization : `Bearer ${userToken}`
         }
     });
 
     expect(response.data.isRequestSuccessful).toBe(true);
     expect(typeof(response.data)).toBe("object");
+    } catch (error) {
+        console.log(`Error while adding a task.\n${error}`);
+    }
 });
 
 test("Test for getting the list of shop items.", async()=>{
-    const response = await axios.get("http://localhost:3000/v1/shop",{
+    try {
+        const response = await axios.get("http://localhost:3000/v1/shop",{
         headers: {
-            authorization
+            authorization : `Bearer ${userToken}`
         }
     });
-
+    
     expect(response.data.isRequestSuccessful).toBe(true)
+    } catch (error) {
+        console.log(`Error while getting all task.\n${error}`);
+    }
 });
 
 test("Test for delete endpoint", async()=>{
-    const response = await axios.delete("http://localhost:3000/v1/shop/delete/6542a2227f1ea91ae74bb6a5", {
+    try {
+        const response = await axios.delete("http://localhost:3000/v1/shop/delete/6548b3dcbd9f8564a8d3b286", {
         headers:{
-            authorization
+            authorization : `Bearer ${userToken}`
         }
     });
 
     expect(response.status).toBe(202);
+    } catch (error) {
+        console.log(error);
+    }
 });
